@@ -1,8 +1,9 @@
 package com.fullstack.shop.web.routine.controller;
 
-import com.fullstack.shop.web.routine.config.GlobalPathConfig;
+import com.fullstack.shop.web.routine.dto.CategoryDTO;
 import com.fullstack.shop.web.routine.entities.Category;
 import com.fullstack.shop.web.routine.service.CategoryService;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -14,15 +15,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/categories")
 public class CategoryController {
     private final CategoryService categoryService;
+    private final ModelMapper modelMapper;
 
-    public CategoryController(CategoryService categoryService) {
+    public CategoryController(CategoryService categoryService, ModelMapper modelMapper) {
         this.categoryService = categoryService;
+	    this.modelMapper = modelMapper;
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Page<Category>> getAllCategories(Pageable pageable) {
+    public ResponseEntity<Page<CategoryDTO>> getAllCategories(Pageable pageable) {
         try {
-            Page<Category> categories = categoryService.getAllCategories(pageable);
+            Page<CategoryDTO> categories = categoryService.getAllCategories(pageable);
             if (categories.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
