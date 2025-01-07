@@ -1,50 +1,60 @@
 package com.fullstack.shop.web.routine.service;
 
+import com.fullstack.shop.web.routine.dto.response.ProductResponseDTO;
 import com.fullstack.shop.web.routine.entities.Product;
+import com.fullstack.shop.web.routine.mapper.ProductMapper;
 import com.fullstack.shop.web.routine.repository.ProductRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.Param;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ProductService {
 
-    private final ProductRepository productRepository;
+	ProductRepository productRepository;
+	ProductMapper productMapper;
 
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
 
-    public Page<Product> getAllProducts(Pageable pageable) {
-        return productRepository.findAll(pageable);
-    }
+	public Page<ProductResponseDTO> getAllProducts(Pageable pageable) {
+		Page<Product> products = productRepository.findAll(pageable);
+		List<ProductResponseDTO> proResponseDtos = new ArrayList<>();
+		for (Product product : products.getContent()) {
+			ProductResponseDTO proDto = productMapper.productToProductResponseDTO(product);
+			proResponseDtos.add(proDto);
+		}
+		return new PageImpl<>(proResponseDtos, pageable, products.getTotalElements());
+	}
 
-    public Product getProductById(Integer id) {
-        return productRepository.findById(id).orElse(null);
-    }
+	public Product getProductById(Integer id) {
+		return productRepository.findById(id).orElse(null);
+	}
 
-    public Product saveOrUpdateProduct(Product product) {
-        return productRepository.save(product);
-    }
+	public Product saveOrUpdateProduct(Product product) {
+		return productRepository.save(product);
+	}
 
-    public Boolean deleteProductById(Integer id) {
-        boolean checkExist = productRepository.existsById(id);
-        if (checkExist) {
-            productRepository.deleteById(id);
-        }
-        return checkExist;
-    }
+	public Boolean deleteProductById(Integer id) {
+		boolean checkExist = productRepository.existsById(id);
+		if (checkExist) {
+			productRepository.deleteById(id);
+		}
+		return checkExist;
+	}
 
-    public Page<Product> searchProductsByName(String name, int pageNumber, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("name").ascending());
-        return productRepository.searchByName(name, pageable);
-    }
+	public Page<Product> searchProductsByName(String name, int pageNumber, int pageSize) {
+		Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("name").ascending());
+		return productRepository.searchByName(name, pageable);
+	}
 
-    public Page<Product> searchProductsByCatId(int catId, int pageNumber, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("id").descending());
-        return productRepository.searchByCatId(catId, pageable);
-    }
+	public Page<Product> searchProductsByCatId(int catId, int pageNumber, int pageSize) {
+		Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("id").descending());
+		return productRepository.searchByCatId(catId, pageable);
+	}
 }

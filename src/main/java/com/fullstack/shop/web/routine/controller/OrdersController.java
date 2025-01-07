@@ -1,5 +1,6 @@
 package com.fullstack.shop.web.routine.controller;
 
+import com.fullstack.shop.web.routine.dto.response.OrdersResponseDTO;
 import com.fullstack.shop.web.routine.entities.OrderDetails;
 import com.fullstack.shop.web.routine.entities.Orders;
 import com.fullstack.shop.web.routine.service.OrderDetailsService;
@@ -20,8 +21,8 @@ public class OrdersController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Page<Orders>> getOrdersList(Pageable pageable) {
-        Page<Orders> ordersPage = ordersService.getAllOrders(pageable);
+    public ResponseEntity<Page<OrdersResponseDTO>> getOrdersList(Pageable pageable) {
+        Page<OrdersResponseDTO> ordersPage = ordersService.getAllOrders(pageable);
         if (ordersPage.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
