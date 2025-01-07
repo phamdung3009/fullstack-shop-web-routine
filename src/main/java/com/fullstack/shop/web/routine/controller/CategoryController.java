@@ -1,6 +1,7 @@
 package com.fullstack.shop.web.routine.controller;
 
 import com.fullstack.shop.web.routine.config.GlobalPathConfig;
+import com.fullstack.shop.web.routine.dto.response.CategoryResponseDTO;
 import com.fullstack.shop.web.routine.entities.Category;
 import com.fullstack.shop.web.routine.service.CategoryService;
 import org.springframework.data.domain.Page;
@@ -20,9 +21,9 @@ public class CategoryController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Page<Category>> getAllCategories(Pageable pageable) {
+    public ResponseEntity<Page<CategoryResponseDTO>> getAllCategories(Pageable pageable) {
         try {
-            Page<Category> categories = categoryService.getAllCategories(pageable);
+            Page<CategoryResponseDTO> categories = categoryService.getAllCategories(pageable);
             if (categories.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
