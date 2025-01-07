@@ -1,5 +1,6 @@
 package com.fullstack.shop.web.routine.controller;
 
+import com.fullstack.shop.web.routine.dto.response.ProductResponseDTO;
 import com.fullstack.shop.web.routine.entities.Product;
 import com.fullstack.shop.web.routine.entities.Promotions;
 import com.fullstack.shop.web.routine.service.ProductService;
@@ -20,8 +21,8 @@ public class ProductController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Page<Product>> getProductList(Pageable pageable) {
-        Page<Product> productPage = productService.getAllProducts(pageable);
+    public ResponseEntity<Page<ProductResponseDTO>> getProductList(Pageable pageable) {
+        Page<ProductResponseDTO> productPage = productService.getAllProducts(pageable);
         if (productPage.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
