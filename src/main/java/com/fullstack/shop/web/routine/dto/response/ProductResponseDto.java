@@ -3,8 +3,6 @@ package com.fullstack.shop.web.routine.dto.response;
 import com.fullstack.shop.web.routine.entities.Category;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @Builder
