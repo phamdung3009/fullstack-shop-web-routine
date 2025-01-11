@@ -1,5 +1,6 @@
 package com.fullstack.shop.web.routine.controller;
 
+import com.fullstack.shop.web.routine.dto.request.PromotionsRequestDTO;
 import com.fullstack.shop.web.routine.dto.response.PromotionsResponseDTO;
 import com.fullstack.shop.web.routine.entities.Promotions;
 import com.fullstack.shop.web.routine.service.PromotionsService;
@@ -37,8 +38,8 @@ public class PromotionsController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Promotions> createPromotions(@RequestBody Promotions promotions) {
-		Promotions checkCreated = promotionsService.saveOrUpdatePromotions(promotions);
+	public ResponseEntity<Promotions> createPromotions(@RequestBody PromotionsRequestDTO requestDTO) {
+		Promotions checkCreated = promotionsService.savePromotions(requestDTO);
 		if (checkCreated == null) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
@@ -46,9 +47,8 @@ public class PromotionsController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Promotions> updatePromotions(@PathVariable("id") Integer id, @RequestBody Promotions promotions) {
-		promotions.setId(id);
-		Promotions checkUpdated = promotionsService.saveOrUpdatePromotions(promotions);
+	public ResponseEntity<Promotions> updatePromotions(@PathVariable("id") Integer id, @RequestBody PromotionsRequestDTO requestDTO) {
+		Promotions checkUpdated = promotionsService.updatePromotions(id, requestDTO);
 		if (checkUpdated == null) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}

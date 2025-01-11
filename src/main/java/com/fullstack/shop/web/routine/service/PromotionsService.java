@@ -1,5 +1,6 @@
 package com.fullstack.shop.web.routine.service;
 
+import com.fullstack.shop.web.routine.dto.request.PromotionsRequestDTO;
 import com.fullstack.shop.web.routine.dto.response.PromotionsResponseDTO;
 import com.fullstack.shop.web.routine.entities.Promotions;
 import com.fullstack.shop.web.routine.mapper.PromotionsMapper;
@@ -27,7 +28,7 @@ public class PromotionsService {
 		Page<Promotions> promotionsPage = promotionsRepository.findAll(pageable);
 		List<PromotionsResponseDTO> dtos = new ArrayList<>();
 		for (Promotions promotions : promotionsPage.getContent()) {
-			PromotionsResponseDTO dto = promotionsMapper.entityToDto(promotions);
+			PromotionsResponseDTO dto = promotionsMapper.toEntities(promotions);
 			dtos.add(dto);
 		}
 		return new PageImpl<>(dtos, pageable, promotionsPage.getTotalElements());
@@ -37,7 +38,14 @@ public class PromotionsService {
 		return promotionsRepository.findById(id).orElse(null);
 	}
 
-	public Promotions saveOrUpdatePromotions(Promotions promotions) {
+	public Promotions savePromotions(PromotionsRequestDTO requestDTO) {
+		Promotions promotions = promotionsMapper.toDto(requestDTO);
+		return promotionsRepository.save(promotions);
+	}
+
+	public Promotions updatePromotions(Integer id, PromotionsRequestDTO requestDTO) {
+		Promotions promotions = promotionsRepository.findById(id).orElse(null);
+		promotionsMapper.updatePromotions(requestDTO, promotions);
 		return promotionsRepository.save(promotions);
 	}
 

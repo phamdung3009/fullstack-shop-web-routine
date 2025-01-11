@@ -6,8 +6,6 @@ import com.fullstack.shop.web.routine.entities.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
-import java.util.List;
-
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 	User userEntitiesToUserRequestDto(UserRequestDTO user);

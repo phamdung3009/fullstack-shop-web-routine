@@ -1,5 +1,6 @@
 package com.fullstack.shop.web.routine.controller;
 
+import com.fullstack.shop.web.routine.dto.request.CustomerRequestDTO;
 import com.fullstack.shop.web.routine.dto.response.CustomerReponseDTO;
 import com.fullstack.shop.web.routine.entities.Customer;
 import com.fullstack.shop.web.routine.service.CustomerService;
@@ -38,8 +39,8 @@ public class CustomerController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Customer> createCustomer(Customer customer) {
-		Customer createCus = customerService.saveOrUpdate(customer);
+	public ResponseEntity<Customer> createCustomer(CustomerRequestDTO requestDTO) {
+		Customer createCus = customerService.saveCustomer(requestDTO);
 		if (createCus == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -47,9 +48,8 @@ public class CustomerController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Customer> updateCustomer(@PathVariable Integer id, Customer customer) {
-		customer.setId(id);
-		Customer updateCus = customerService.saveOrUpdate(customer);
+	public ResponseEntity<Customer> updateCustomer(@PathVariable Integer id, CustomerRequestDTO requestDTO) {
+		Customer updateCus = customerService.updateCustomer(id, requestDTO);
 		if (updateCus == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

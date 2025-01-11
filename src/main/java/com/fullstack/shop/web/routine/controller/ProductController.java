@@ -1,5 +1,6 @@
 package com.fullstack.shop.web.routine.controller;
 
+import com.fullstack.shop.web.routine.dto.request.ProductRequestDTO;
 import com.fullstack.shop.web.routine.dto.response.ProductResponseDTO;
 import com.fullstack.shop.web.routine.entities.Product;
 import com.fullstack.shop.web.routine.entities.Promotions;
@@ -39,8 +40,8 @@ public class ProductController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-		Product checkCreated = productService.saveOrUpdateProduct(product);
+	public ResponseEntity<Product> createProduct(@RequestBody ProductRequestDTO productRequestDTO) {
+		Product checkCreated = productService.saveProduct(productRequestDTO);
 		if (checkCreated == null) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
@@ -48,9 +49,8 @@ public class ProductController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Product> updateProduct(@PathVariable("id") Integer id, @RequestBody Product product) {
-		product.setId(id);
-		Product checkUpdated = productService.saveOrUpdateProduct(product);
+	public ResponseEntity<Product> updateProduct(@PathVariable("id") Integer id, @RequestBody ProductRequestDTO productRequestDTO) {
+		Product checkUpdated = productService.updateProduct(id, productRequestDTO);
 		if (checkUpdated == null) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}

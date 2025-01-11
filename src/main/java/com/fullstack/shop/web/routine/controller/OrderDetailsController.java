@@ -1,5 +1,6 @@
 package com.fullstack.shop.web.routine.controller;
 
+import com.fullstack.shop.web.routine.dto.request.OrderDetailsRequestDTO;
 import com.fullstack.shop.web.routine.dto.response.OrderDetailsResponseDTO;
 import com.fullstack.shop.web.routine.entities.OrderDetails;
 import com.fullstack.shop.web.routine.service.OrderDetailsService;
@@ -37,8 +38,8 @@ public class OrderDetailsController {
 	}
 
 	@PostMapping
-	public ResponseEntity<OrderDetails> createOrderDetails(@RequestBody OrderDetails orderDetails) {
-		OrderDetails checkCreated = orderDetailsService.saveOrUpdateOrderDetails(orderDetails);
+	public ResponseEntity<OrderDetails> createOrderDetails(@RequestBody OrderDetailsRequestDTO requestDTO) {
+		OrderDetails checkCreated = orderDetailsService.saveOrderDetails(requestDTO);
 		if (checkCreated == null) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
@@ -46,9 +47,8 @@ public class OrderDetailsController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<OrderDetails> updateOrderDetails(@PathVariable("id") Integer id, @RequestBody OrderDetails orderDetails) {
-		orderDetails.setId(id);
-		OrderDetails checkUpdated = orderDetailsService.saveOrUpdateOrderDetails(orderDetails);
+	public ResponseEntity<OrderDetails> updateOrderDetails(@PathVariable("id") Integer id, @RequestBody OrderDetailsRequestDTO requestDTO) {
+		OrderDetails checkUpdated = orderDetailsService.updateOrderDetails(id, requestDTO);
 		if (checkUpdated == null) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}

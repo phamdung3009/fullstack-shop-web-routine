@@ -1,5 +1,6 @@
 package com.fullstack.shop.web.routine.service;
 
+import com.fullstack.shop.web.routine.dto.request.ProductRequestDTO;
 import com.fullstack.shop.web.routine.dto.response.ProductResponseDTO;
 import com.fullstack.shop.web.routine.entities.Product;
 import com.fullstack.shop.web.routine.mapper.ProductMapper;
@@ -26,7 +27,7 @@ public class ProductService {
 		Page<Product> products = productRepository.findAll(pageable);
 		List<ProductResponseDTO> proResponseDtos = new ArrayList<>();
 		for (Product product : products.getContent()) {
-			ProductResponseDTO proDto = productMapper.productToProductResponseDTO(product);
+			ProductResponseDTO proDto = productMapper.toEntities(product);
 			proResponseDtos.add(proDto);
 		}
 		return new PageImpl<>(proResponseDtos, pageable, products.getTotalElements());
@@ -36,7 +37,14 @@ public class ProductService {
 		return productRepository.findById(id).orElse(null);
 	}
 
-	public Product saveOrUpdateProduct(Product product) {
+	public Product saveProduct(ProductRequestDTO productRequestDTO) {
+		Product product = productMapper.toDto(productRequestDTO);
+		return productRepository.save(product);
+	}
+
+	public Product updateProduct(int id, ProductRequestDTO productRequestDTO) {
+		Product product = productRepository.findById(id).orElse(null);
+		productMapper.update(product, productRequestDTO);
 		return productRepository.save(product);
 	}
 

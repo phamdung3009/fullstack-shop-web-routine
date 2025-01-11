@@ -1,5 +1,6 @@
 package com.fullstack.shop.web.routine.service;
 
+import com.fullstack.shop.web.routine.dto.request.CategoryRequestDTO;
 import com.fullstack.shop.web.routine.dto.response.CategoryResponseDTO;
 import com.fullstack.shop.web.routine.entities.Category;
 import com.fullstack.shop.web.routine.mapper.CategoryMapper;
@@ -27,7 +28,7 @@ public class CategoryService {
 			Page<Category> categories = categoryRepository.findAll(pageable);
 			List<CategoryResponseDTO> catDtos = new ArrayList<>();
 			for (Category cat : categories) {
-				CategoryResponseDTO dto = categoryMapper.categoryToCategoryResponseDTO(cat);
+				CategoryResponseDTO dto = categoryMapper.CategoryResponseDTOToCategory(cat);
 				catDtos.add(dto);
 			}
 			return new PageImpl<>(catDtos, pageable, categories.getTotalElements());
@@ -36,11 +37,20 @@ public class CategoryService {
 		}
 	}
 
-	public Category searchById(Integer id) {
-		return categoryRepository.findById(id).orElse(null);
+	public CategoryResponseDTO searchById(Integer id) {
+		Category category = categoryRepository.findById(id).orElse(null);
+		CategoryResponseDTO dto = categoryMapper.CategoryResponseDTOToCategory(category);
+		return dto;
 	}
 
-	public Category saveOrUpdate(Category category) {
+	public Category saveCategory(CategoryRequestDTO categoryRequestDTO) {
+		Category category = categoryMapper.categoryToCategoryRequestDTO(categoryRequestDTO);
+		return categoryRepository.save(category);
+	}
+
+	public Category updateCategory(int id, CategoryRequestDTO categoryRequestDTO) {
+		Category category = categoryRepository.findById(id).orElse(null);
+		categoryMapper.updateCategory(category, categoryRequestDTO);
 		return categoryRepository.save(category);
 	}
 

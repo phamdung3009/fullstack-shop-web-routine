@@ -12,14 +12,8 @@ public class UserResponseDTO {
 	Integer id;
 	String firstName;
 	String lastName;
-	String fullName;
 	String email;
 	String address;
 	String password;
 	String confirmPassword;
-
-	public String getFullName() {
-		return String.format("%s %s", firstName, lastName).trim();
-	}
-
 }

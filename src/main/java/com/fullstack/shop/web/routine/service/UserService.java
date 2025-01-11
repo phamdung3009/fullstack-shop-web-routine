@@ -46,12 +46,7 @@ public class UserService {
 		UserResponseDTO userResponseDTO = userMapper.userResponseDtoToUserEntities(user);
 		return userResponseDTO;
 	}
-
-	public User createUser(UserRequestDTO userRequestDTO) {
-		User user = userMapper.userEntitiesToUserRequestDto(userRequestDTO);
-		return userRepository.save(user);
-	}
-
+	
 	public User updateUser(int id, UserRequestDTO userRequestDTO) {
 		// Cach 1 pho thong
 		/*User user = userRepository.findById(id).orElse(null);
@@ -84,7 +79,7 @@ public class UserService {
 		if (checkExists != null) {
 			return checkExists;
 		} else {
-			return createUser(userRequestDTO);
+			return userRepository.save(userMapper.userEntitiesToUserRequestDto(userRequestDTO));
 		}
 	}
 }

@@ -23,7 +23,7 @@ public class UserController {
 	private final UserRepository userRepository;
 
 	@GetMapping("/login")
-	public ResponseEntity<Boolean> checkExistEmailPassword(@RequestParam String email, @RequestParam String password) {
+	public ResponseEntity<Boolean> login(@RequestParam String email, @RequestParam String password) {
 		try {
 			boolean result = userService.checkExistLogin(email, password);
 			if (result) {
@@ -46,7 +46,7 @@ public class UserController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<UserResponseDTO> getUser(@PathVariable Integer id) {
+	public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Integer id) {
 		UserResponseDTO result = userService.getUserById(id);
 		if (result != null) {
 			return new ResponseEntity<>(result, HttpStatus.OK);
@@ -54,17 +54,8 @@ public class UserController {
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
-	@PostMapping
-	public ResponseEntity<User> created(@RequestBody UserRequestDTO userRequestDTO) {
-		User user = userService.createUser(userRequestDTO);
-		if (user != null) {
-			return new ResponseEntity<>(user, HttpStatus.CREATED);
-		}
-		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-	}
-
 	@PutMapping("/{id}")
-	public ResponseEntity<User> update(@PathVariable Integer id, @RequestBody UserRequestDTO userRequestDTO) {
+	public ResponseEntity<User> updateUserById(@PathVariable Integer id, @RequestBody UserRequestDTO userRequestDTO) {
 		User user = userService.updateUser(id, userRequestDTO);
 		if (user != null) {
 			return new ResponseEntity<>(user, HttpStatus.OK);
@@ -73,7 +64,7 @@ public class UserController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Boolean> delete(@PathVariable Integer id) {
+	public ResponseEntity<Boolean> deleteUserById(@PathVariable Integer id) {
 		boolean result = userService.deleteUser(id);
 		if (result) {
 			return new ResponseEntity<>(true, HttpStatus.OK);
@@ -82,7 +73,7 @@ public class UserController {
 	}
 
 	@PostMapping("/register")
-	public ResponseEntity<User> getUser(@RequestBody UserRequestDTO requestDTO) {
+	public ResponseEntity<User> registerUser(@RequestBody UserRequestDTO requestDTO) {
 		User user = userService.checkOrCreateUser(requestDTO.getEmail(), requestDTO);
 		if (user != null) {
 			return new ResponseEntity<>(user, HttpStatus.OK);

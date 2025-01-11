@@ -1,5 +1,6 @@
 package com.fullstack.shop.web.routine.service;
 
+import com.fullstack.shop.web.routine.dto.request.OrdersRequestDTO;
 import com.fullstack.shop.web.routine.dto.response.OrdersResponseDTO;
 import com.fullstack.shop.web.routine.entities.Orders;
 import com.fullstack.shop.web.routine.mapper.OrdersMapper;
@@ -37,7 +38,14 @@ public class OrdersService {
 		return ordersRepository.findById(id).orElse(null);
 	}
 
-	public Orders saveOrUpdateOrders(Orders orders) {
+	public Orders saveOrder(OrdersRequestDTO requestDTO) {
+		Orders orders = ordersMapper.dtoToEntity(requestDTO);
+		return ordersRepository.save(orders);
+	}
+
+	public Orders updateOrders(Integer id, OrdersRequestDTO requestDTO) {
+		Orders orders = ordersRepository.findById(id).orElse(null);
+		ordersMapper.update(requestDTO, orders);
 		return ordersRepository.save(orders);
 	}
 

@@ -1,5 +1,6 @@
 package com.fullstack.shop.web.routine.controller;
 
+import com.fullstack.shop.web.routine.dto.request.OrdersRequestDTO;
 import com.fullstack.shop.web.routine.dto.response.OrdersResponseDTO;
 import com.fullstack.shop.web.routine.entities.OrderDetails;
 import com.fullstack.shop.web.routine.entities.Orders;
@@ -14,54 +15,53 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/orders")
 public class OrdersController {
-    private final OrdersService ordersService;
+	private final OrdersService ordersService;
 
-    public OrdersController(OrdersService ordersService) {
-        this.ordersService = ordersService;
-    }
+	public OrdersController(OrdersService ordersService) {
+		this.ordersService = ordersService;
+	}
 
-    @GetMapping("/all")
-    public ResponseEntity<Page<OrdersResponseDTO>> getOrdersList(Pageable pageable) {
-        Page<OrdersResponseDTO> ordersPage = ordersService.getAllOrders(pageable);
-        if (ordersPage.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(ordersPage, HttpStatus.OK);
-    }
+	@GetMapping("/all")
+	public ResponseEntity<Page<OrdersResponseDTO>> getOrdersList(Pageable pageable) {
+		Page<OrdersResponseDTO> ordersPage = ordersService.getAllOrders(pageable);
+		if (ordersPage.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<>(ordersPage, HttpStatus.OK);
+	}
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Orders> getOrders(@PathVariable("id") Integer id) {
-        Orders checkOrderId = ordersService.getOrdersById(id);
-        if (checkOrderId == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(checkOrderId, HttpStatus.OK);
-    }
+	@GetMapping("/{id}")
+	public ResponseEntity<Orders> getOrders(@PathVariable("id") Integer id) {
+		Orders checkOrderId = ordersService.getOrdersById(id);
+		if (checkOrderId == null) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<>(checkOrderId, HttpStatus.OK);
+	}
 
-    @PostMapping
-    public ResponseEntity<Orders> createOrders(@RequestBody Orders orders) {
-        Orders checkCreated = ordersService.saveOrUpdateOrders(orders);
-        if (checkCreated == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(checkCreated, HttpStatus.OK);
-    }
+	@PostMapping
+	public ResponseEntity<Orders> createOrders(@RequestBody OrdersRequestDTO requestDTO) {
+		Orders checkCreated = ordersService.saveOrder(requestDTO);
+		if (checkCreated == null) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<>(checkCreated, HttpStatus.OK);
+	}
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Orders> updateOrders(@PathVariable("id") Integer id, @RequestBody Orders orders) {
-        orders.setId(id);
-        Orders checkUpdated = ordersService.saveOrUpdateOrders(orders);
-        if (checkUpdated == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(checkUpdated, HttpStatus.OK);
-    }
+	@PutMapping("/{id}")
+	public ResponseEntity<Orders> updateOrders(@PathVariable("id") Integer id, @RequestBody OrdersRequestDTO requestDTO) {
+		Orders checkUpdated = ordersService.updateOrders(id, requestDTO);
+		if (checkUpdated == null) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<>(checkUpdated, HttpStatus.OK);
+	}
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteOrders(@PathVariable("id") Integer id) {
-        if (ordersService.deleteOrdersById(id)) {
-            return new ResponseEntity<>(true, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(false, HttpStatus.OK);
-    }
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Boolean> deleteOrders(@PathVariable("id") Integer id) {
+		if (ordersService.deleteOrdersById(id)) {
+			return new ResponseEntity<>(true, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(false, HttpStatus.OK);
+	}
 }

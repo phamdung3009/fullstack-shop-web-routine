@@ -1,5 +1,6 @@
 package com.fullstack.shop.web.routine.service;
 
+import com.fullstack.shop.web.routine.dto.request.CustomerRequestDTO;
 import com.fullstack.shop.web.routine.dto.response.CustomerReponseDTO;
 import com.fullstack.shop.web.routine.entities.Customer;
 import com.fullstack.shop.web.routine.mapper.CustomerMapper;
@@ -26,7 +27,7 @@ public class CustomerService {
 		Page<Customer> customers = customerRepository.findAll(pageable);
 		List<CustomerReponseDTO> cusResDtos = new ArrayList<>();
 		for (Customer customer : customers.getContent()) {
-			CustomerReponseDTO resDto = customerMapper.customerToCustomerReponseDTO(customer);
+			CustomerReponseDTO resDto = customerMapper.toEntities(customer);
 			cusResDtos.add(resDto);
 		}
 		return new PageImpl<>(cusResDtos, pageable, customers.getTotalElements());
@@ -36,7 +37,14 @@ public class CustomerService {
 		return customerRepository.findById(id).orElse(null);
 	}
 
-	public Customer saveOrUpdate(Customer customer) {
+	public Customer saveCustomer(CustomerRequestDTO requestDTO) {
+		Customer customer = customerMapper.toDto(requestDTO);
+		return customerRepository.save(customer);
+	}
+
+	public Customer updateCustomer(Integer id, CustomerRequestDTO requestDTO) {
+		Customer customer = customerRepository.findById(id).orElse(null);
+		customerMapper.update(customer, requestDTO);
 		return customerRepository.save(customer);
 	}
 
