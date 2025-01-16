@@ -2,7 +2,9 @@ package com.fullstack.shop.web.routine.controller;
 
 import com.fullstack.shop.web.routine.dto.APIResponse;
 import com.fullstack.shop.web.routine.dto.request.AuthenticationRequestDTO;
+import com.fullstack.shop.web.routine.dto.request.IntrospectRequestDTO;
 import com.fullstack.shop.web.routine.dto.response.AuthenticationResponseDTO;
+import com.fullstack.shop.web.routine.dto.response.IntrospectResponseDTO;
 import com.fullstack.shop.web.routine.service.AuthenticationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +21,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
 	AuthenticationService authenticationService;
 
-	@PostMapping("/log-in")
+	@PostMapping("/token")
 	public APIResponse<AuthenticationResponseDTO> authenticate(@RequestBody AuthenticationRequestDTO authenticationRequestDTO) {
-		boolean result = authenticationService.authenticate(authenticationRequestDTO);
+		var result = authenticationService.authenticate(authenticationRequestDTO);
 		return APIResponse.<AuthenticationResponseDTO>builder()
-				.result(AuthenticationResponseDTO.builder().authenticated(result).build())
+				.result(result)
+				.build();
+	}@PostMapping("/introspect")
+	public APIResponse<IntrospectResponseDTO> authenticate(@RequestBody IntrospectRequestDTO requestDTO) {
+		var result = authenticationService.introspect(requestDTO);
+		return APIResponse.<IntrospectResponseDTO>builder()
+				.result(result)
 				.build();
 	}
 }

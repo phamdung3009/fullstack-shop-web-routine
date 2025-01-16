@@ -1,4 +1,4 @@
-package com.fullstack.shop.web.routine.dto.response;
+package com.fullstack.shop.web.routine.dto.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,7 +8,6 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AuthenticationResponseDTO {
+public class IntrospectRequestDTO {
 	String token;
-	boolean authenticated;
 }
