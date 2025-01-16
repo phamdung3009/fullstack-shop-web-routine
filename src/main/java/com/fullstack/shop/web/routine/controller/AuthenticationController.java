@@ -27,7 +27,9 @@ public class AuthenticationController {
 		return APIResponse.<AuthenticationResponseDTO>builder()
 				.result(result)
 				.build();
-	}@PostMapping("/introspect")
+	}
+
+	@PostMapping("/introspect")
 	public APIResponse<IntrospectResponseDTO> authenticate(@RequestBody IntrospectRequestDTO requestDTO) {
 		var result = authenticationService.introspect(requestDTO);
 		return APIResponse.<IntrospectResponseDTO>builder()
