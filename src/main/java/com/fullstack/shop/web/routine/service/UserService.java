@@ -11,6 +11,8 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -79,7 +81,10 @@ public class UserService {
 		if (checkExists != null) {
 			return checkExists;
 		} else {
-			return userRepository.save(userMapper.userEntitiesToUserRequestDto(userRequestDTO));
+			User user = userMapper.userEntitiesToUserRequestDto(userRequestDTO);
+			PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+			user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
+			return userRepository.save(user);
 		}
 	}
 }
