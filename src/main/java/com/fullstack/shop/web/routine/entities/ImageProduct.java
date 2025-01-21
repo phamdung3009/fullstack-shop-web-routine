@@ -1,6 +1,6 @@
 package com.fullstack.shop.web.routine.entities;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
 
 @Entity

@@ -1,7 +1,8 @@
 package com.fullstack.shop.web.routine.entities;
 
-import jakarta.persistence.*;
 import lombok.*;
+
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -23,4 +24,5 @@ public class User {
 	private String password;
 	@Column(name = "confirm_password")
 	private String confirmPassword;
+	private String role;
 }

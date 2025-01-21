@@ -1,16 +1,16 @@
 package com.fullstack.shop.web.routine.config;
 
-import io.swagger.v3.oas.models.ExternalDocumentation;
+/*import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Configuration;*/
 
-@Configuration
+//@Configuration
 public class SwaggerConfig {
 
-    @Bean
+/*    @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info().title("Spring Boot Swagger Example API")
@@ -20,5 +20,5 @@ public class SwaggerConfig {
                 .externalDocs(new ExternalDocumentation()
                         .description("SpringDoc Documentation")
                         .url("https://springdoc.org/"));
-    }
+    }*/
 }

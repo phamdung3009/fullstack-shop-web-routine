@@ -1,9 +1,6 @@
 package com.fullstack.shop.web.routine.dto.response;
 
 import com.fullstack.shop.web.routine.entities.Customer;
-import com.fullstack.shop.web.routine.entities.Orders;
-import com.fullstack.shop.web.routine.entities.Product;
-import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
